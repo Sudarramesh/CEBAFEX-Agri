@@ -1,9 +1,11 @@
-name: Install Streamlit app from ZIP
+name: Install CEBAFEX Agri Streamlit app
 on:
   push:
     branches: [main]
     paths:
+      - 'CEBAFEX_Agri_Complete.zip'
       - 'CEBAFEX_Agri_Streamlit_Cloud_Ready.zip'
+      - '.github/workflows/unpack-streamlit.yml'
   workflow_dispatch:
 permissions:
   contents: write
@@ -14,27 +16,60 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: true
-      - name: Safely extract application into repo root
+      - name: Extract uploaded app and apply cloud settings
         run: |
           python - <<'PY'
-          import pathlib, zipfile
-          root = pathlib.Path('.').resolve()
-          with zipfile.ZipFile('CEBAFEX_Agri_Streamlit_Cloud_Ready.zip') as z:
-              for member in z.infolist():
-                  if member.is_dir():
-                      continue
-                  target = (root / member.filename).resolve()
-                  if not target.is_relative_to(root):
-                      raise ValueError('Unsafe archive path: ' + member.filename)
-                  if member.filename.startswith('.git/') or member.filename.startswith('.github/'):
-                      raise ValueError('Unexpected Git metadata in archive')
-                  target.parent.mkdir(parents=True, exist_ok=True)
-                  target.write_bytes(z.read(member))
+          from pathlib import Path
+          import stat
+          import zipfile
+
+          root = Path('.').resolve()
+          archives = [
+              Path('CEBAFEX_Agri_Streamlit_Cloud_Ready.zip'),
+              Path('CEBAFEX_Agri_Complete.zip'),
+          ]
+          archive = next((p for p in archives if p.exists()), None)
+          if archive is None:
+              if (root / 'app.py').exists():
+                  print('App is already extracted.')
+              else:
+                  raise RuntimeError('Neither deployment archive nor app.py exists')
+          else:
+              with zipfile.ZipFile(archive) as z:
+                  paths = [p.filename for p in z.infolist() if not p.is_dir()]
+                  prefix = 'CEBAFEX_Agri_Complete/' if paths and all(p.startswith('CEBAFEX_Agri_Complete/') for p in paths) else ''
+                  for member in z.infolist():
+                      if member.is_dir():
+                          continue
+                      if stat.S_ISLNK(member.external_attr >> 16):
+                          raise ValueError('Symlink not allowed in ZIP')
+                      name = member.filename[len(prefix):] if prefix else member.filename
+                      if not name:
+                          continue
+                      rel = Path(name)
+                      if rel.is_absolute() or '..' in rel.parts or rel.parts[0] in ('.git', '.github'):
+                          raise ValueError('Unsafe archive entry: ' + member.filename)
+                      if rel.name == '.env' or rel.name.startswith('.env.'):
+                          raise ValueError('Environment secrets should not be published')
+                      target = (root / rel).resolve()
+                      if not target.is_relative_to(root):
+                          raise ValueError('Unsafe archive path: ' + member.filename)
+                      target.parent.mkdir(parents=True, exist_ok=True)
+                      target.write_bytes(z.read(member))
+              archive.unlink()
+
+          config = root / '.streamlit' / 'config.toml'
+          if config.exists():
+              config.write_text(''.join(line for line in config.read_text().splitlines(keepends=True)
+                                      if not line.strip().startswith('address =')))
+          if not (root / 'app.py').is_file():
+              raise RuntimeError('app.py not present after ZIP extraction')
+          if not (root / 'requirements.txt').is_file():
+              raise RuntimeError('requirements.txt not present after ZIP extraction')
           PY
-      - name: Commit extracted project
+      - name: Commit extracted app
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          rm CEBAFEX_Agri_Streamlit_Cloud_Ready.zip
           git add -A
-          git diff --cached --quiet || (git commit -m 'Install CEBAFEX Agri Streamlit application' && git push)
+          git diff --cached --quiet || (git commit -m 'Install CEBAFEX Agri Streamlit app' && git push)
