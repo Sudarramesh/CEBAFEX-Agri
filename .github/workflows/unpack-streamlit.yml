@@ -1,0 +1,40 @@
+name: Install Streamlit app from ZIP
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'CEBAFEX_Agri_Streamlit_Cloud_Ready.zip'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Safely extract application into repo root
+        run: |
+          python - <<'PY'
+          import pathlib, zipfile
+          root = pathlib.Path('.').resolve()
+          with zipfile.ZipFile('CEBAFEX_Agri_Streamlit_Cloud_Ready.zip') as z:
+              for member in z.infolist():
+                  if member.is_dir():
+                      continue
+                  target = (root / member.filename).resolve()
+                  if not target.is_relative_to(root):
+                      raise ValueError('Unsafe archive path: ' + member.filename)
+                  if member.filename.startswith('.git/') or member.filename.startswith('.github/'):
+                      raise ValueError('Unexpected Git metadata in archive')
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  target.write_bytes(z.read(member))
+          PY
+      - name: Commit extracted project
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm CEBAFEX_Agri_Streamlit_Cloud_Ready.zip
+          git add -A
+          git diff --cached --quiet || (git commit -m 'Install CEBAFEX Agri Streamlit application' && git push)
