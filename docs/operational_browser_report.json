@@ -1,0 +1,288 @@
+{
+  "languages": [
+    {
+      "language": "en",
+      "proposal_confirmation_sale": "passed",
+      "complete_database_download": "passed",
+      "forecast_training_later_actuals": "passed"
+    },
+    {
+      "language": "ta",
+      "proposal_confirmation_sale": "passed",
+      "complete_database_download": "passed",
+      "forecast_training_later_actuals": "passed"
+    }
+  ],
+  "screens": [
+    {
+      "language": "en",
+      "screen": "Home",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "en",
+      "screen": "Upload Data",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "en",
+      "screen": "Dashboard",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "en",
+      "screen": "Surplus and Risk",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "en",
+      "screen": "Buyer Matching",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "en",
+      "screen": "Profit Analysis",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "en",
+      "screen": "AI Assistant",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "en",
+      "screen": "Workspace",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "en",
+      "screen": "Supply Network",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "en",
+      "screen": "History and Forecasts",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "en",
+      "screen": "Outcome Evaluation",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "ta",
+      "screen": "Home",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "ta",
+      "screen": "Upload Data",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "ta",
+      "screen": "Dashboard",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "ta",
+      "screen": "Surplus and Risk",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "ta",
+      "screen": "Buyer Matching",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "ta",
+      "screen": "Profit Analysis",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "ta",
+      "screen": "AI Assistant",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "ta",
+      "screen": "Workspace",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "ta",
+      "screen": "Supply Network",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "ta",
+      "screen": "History and Forecasts",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    },
+    {
+      "language": "ta",
+      "screen": "Outcome Evaluation",
+      "desktop_language": "passed",
+      "phone_width": 375,
+      "horizontal_page_overflow": false
+    }
+  ],
+  "accessibility": [
+    {
+      "language": "en",
+      "screen": "Home",
+      "violations": []
+    },
+    {
+      "language": "en",
+      "screen": "Upload Data",
+      "violations": []
+    },
+    {
+      "language": "en",
+      "screen": "Dashboard",
+      "violations": []
+    },
+    {
+      "language": "en",
+      "screen": "Surplus and Risk",
+      "violations": []
+    },
+    {
+      "language": "en",
+      "screen": "Buyer Matching",
+      "violations": []
+    },
+    {
+      "language": "en",
+      "screen": "Profit Analysis",
+      "violations": []
+    },
+    {
+      "language": "en",
+      "screen": "AI Assistant",
+      "violations": []
+    },
+    {
+      "language": "en",
+      "screen": "Workspace",
+      "violations": []
+    },
+    {
+      "language": "en",
+      "screen": "Supply Network",
+      "violations": []
+    },
+    {
+      "language": "en",
+      "screen": "History and Forecasts",
+      "violations": []
+    },
+    {
+      "language": "en",
+      "screen": "Outcome Evaluation",
+      "violations": []
+    },
+    {
+      "language": "ta",
+      "screen": "Home",
+      "violations": []
+    },
+    {
+      "language": "ta",
+      "screen": "Upload Data",
+      "violations": []
+    },
+    {
+      "language": "ta",
+      "screen": "Dashboard",
+      "violations": []
+    },
+    {
+      "language": "ta",
+      "screen": "Surplus and Risk",
+      "violations": []
+    },
+    {
+      "language": "ta",
+      "screen": "Buyer Matching",
+      "violations": []
+    },
+    {
+      "language": "ta",
+      "screen": "Profit Analysis",
+      "violations": []
+    },
+    {
+      "language": "ta",
+      "screen": "AI Assistant",
+      "violations": []
+    },
+    {
+      "language": "ta",
+      "screen": "Workspace",
+      "violations": []
+    },
+    {
+      "language": "ta",
+      "screen": "Supply Network",
+      "violations": []
+    },
+    {
+      "language": "ta",
+      "screen": "History and Forecasts",
+      "violations": []
+    },
+    {
+      "language": "ta",
+      "screen": "Outcome Evaluation",
+      "violations": []
+    }
+  ],
+  "external_requests": [],
+  "browser_errors": [],
+  "browser": "153.0.8010.0",
+  "status": "passed"
+}

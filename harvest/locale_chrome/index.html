@@ -1,0 +1,52 @@
+<!doctype html><html><head><meta charset="utf-8"></head><body><script>
+// Localizes framework-owned accessibility text only; never changes uploaded data or numeric calculations.
+const send=(type,extra={})=>parent.postMessage({isStreamlitMessage:true,type,...extra},'*');
+const labels={
+ 'Sidebar':'பக்கப் பட்டை',
+ 'Scroll tabs right':'தாவல்களை வலப்புறம் உருட்டவும்','Scroll tabs left':'தாவல்களை இடப்புறம் உருட்டவும்',
+ 'Collapse sidebar':'பக்கப் பட்டையைச் சுருக்கவும்','Expand sidebar':'பக்கப் பட்டையை விரிக்கவும்',
+ 'Open sidebar':'பக்கப் பட்டையைத் திறக்கவும்','Close sidebar':'பக்கப் பட்டையை மூடவும்',
+ 'Clear all':'அனைத்தையும் அழிக்கவும்','Open':'திறக்கவும்','Close':'மூடவும்','Clear':'அழிக்கவும்','Clear value':'மதிப்பை அழிக்கவும்',
+ 'Decrease value':'மதிப்பைக் குறைக்கவும்','Increase value':'மதிப்பை அதிகரிக்கவும்',
+ 'Increment':'அதிகரிக்கவும்','Decrement':'குறைக்கவும்','Search':'தேடவும்',
+ 'Skip to main content':'முதன்மை உள்ளடக்கத்திற்குச் செல்லவும்','Main menu':'முதன்மைப் பட்டியல்','Link to heading':'தலைப்பிற்கான இணைப்பு',
+ 'Dataframe':'அட்டவணை','Data visualization':'தரவு காட்சி','No options':'விருப்பங்கள் இல்லை',
+ 'No results found':'முடிவுகள் இல்லை','No options available.':'விருப்பங்கள் இல்லை.',
+ 'Select...':'தேர்ந்தெடுக்கவும்','Type to search...':'தேடுவதற்கு உள்ளிடவும்',
+ 'Choose an option':'ஒரு விருப்பத்தைத் தேர்ந்தெடுக்கவும்','Select an option':'ஒரு விருப்பத்தைத் தேர்ந்தெடுக்கவும்','Choose options':'விருப்பங்களைத் தேர்ந்தெடுக்கவும்',
+ 'harvest.locale_ui.tamil_csv_upload':'தரவுக் கோப்புப் பதிவேற்றம்',
+ 'harvest.locale_ui.locale_chrome':'மொழி அமைப்புகள்'};
+const reverse=Object.fromEntries(Object.entries(labels).map(([a,b])=>[b,a]));
+let tamil=false,scheduled=false;
+function localize(value){
+ if(tamil){if(labels[value])return labels[value];if(value.startsWith('Remove '))return value.slice(7)+' நீக்கவும்';const count=value.match(/^(\d+) options? available\.?$/);if(count)return count[1]+' விருப்பங்கள் உள்ளன.';}
+ else {if(reverse[value])return reverse[value];if(value.endsWith(' நீக்கவும்'))return 'Remove '+value.slice(0,-' நீக்கவும்'.length);const count=value.match(/^(\d+) விருப்பங்கள் உள்ளன\.$/);if(count)return count[1]+' options available.';}
+ return value;
+}
+function refresh(){
+ scheduled=false;let doc;
+ try{doc=parent.document;}catch{return;}
+ doc.documentElement.lang=tamil?'ta':'en';
+ if(window.frameElement){window.frameElement.setAttribute('aria-hidden','true');window.frameElement.tabIndex=-1;}
+ for(const table of doc.querySelectorAll('.stTable table')){
+  const box=table.parentElement;box.tabIndex=0;box.setAttribute('role','region');
+  const label=tamil?'உருட்டக்கூடிய தரவு அட்டவணை':'Scrollable data table';
+  if(box.getAttribute('aria-label')!==label)box.setAttribute('aria-label',label);
+ }
+ for(const icon of doc.querySelectorAll('[data-testid="stIconMaterial"]'))icon.setAttribute('aria-hidden','true');
+ for(const el of doc.querySelectorAll('[aria-label],[title],[placeholder]')){
+  for(const attr of ['aria-label','title','placeholder']){const old=el.getAttribute(attr);if(old){const next=localize(old);if(next!==old)el.setAttribute(attr,next);}}
+ }
+ for(const el of doc.querySelectorAll('[role="log"],[aria-live]')){
+  const walker=doc.createTreeWalker(el,NodeFilter.SHOW_TEXT);let node;
+  while(node=walker.nextNode()){const next=localize(node.nodeValue);if(next!==node.nodeValue)node.nodeValue=next;}
+ }
+}
+const observer=new MutationObserver(()=>{if(!scheduled){scheduled=true;requestAnimationFrame(refresh);}});
+try{observer.observe(parent.document.documentElement,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['aria-label','title','placeholder']});}catch{}
+window.addEventListener('message',event=>{if(event.source===parent&&event.data.type==='streamlit:render'){
+ tamil=event.data.args.language==='தமிழ்';document.documentElement.lang=tamil?'ta':'en';refresh();send('streamlit:setFrameHeight',{height:0});
+}});
+window.addEventListener('unload',()=>observer.disconnect());
+send('streamlit:componentReady',{apiVersion:1});send('streamlit:setFrameHeight',{height:0});
+</script></body></html>

@@ -1,0 +1,4 @@
+buyer_name,buyer_type,crop_nm,required_qty,offer_price,transport_cost
+Green Leaf Restaurant,Restaurant,Tomatoes,100,28,200
+City Hostel,Hostel,Tomatoes,80,26,250
+Fresh Basket Market,Retailer,Onions,100,32,180
